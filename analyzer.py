@@ -41,7 +41,7 @@ if "csv_content" not in ss:
     ss.csv_content = ""
 
 
-st.title("Receipt Analyzer™")
+st.title("Receipt Analyzer")
 
 
 # CSV file uploader

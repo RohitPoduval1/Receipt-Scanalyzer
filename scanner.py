@@ -42,7 +42,7 @@ def reset():
 
 
 # Title
-st.title("Receipt Scanalyzer™ - Scanner")
+st.title("Receipt Scanner")
 
 
 # How to Use
