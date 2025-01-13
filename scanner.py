@@ -126,7 +126,16 @@ receipt_store = st.selectbox(
 # Receipt Type Warning if not selected
 if receipt_store:
     ss.receipt.store = receipt_store
-    st.success(f"Your receipt is from {ss.receipt.store}", icon=":material/check:")
+    if receipt_store != "Other":
+        st.success(
+            f"Your receipt is from {ss.receipt.store}",
+            icon=":material/check:"
+        )
+    else:
+        st.success(
+            "You have uploaded a receipt not present in the dropdown menu",
+            icon=":material/check:"
+        )
 else:
     st.warning("Please the store your receipt is from", icon=":material/warning:")
 
