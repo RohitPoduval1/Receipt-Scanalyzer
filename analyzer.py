@@ -3,6 +3,7 @@ import statistics
 import pandas as pd
 import streamlit as st
 from analyzer_helpers import classify
+from httpx import ConnectError
 
 # Streamlit Session State
 ss = st.session_state
@@ -79,7 +80,11 @@ if ss.valid_csv:
         prices.append(price)
 
         # Classify Item
-        classification = classify(item)
+        classification = ""
+        try:
+            classification = classify(item)
+        except ConnectError as e:
+            pass
         if classification == "Healthy":
             healthy_count += 1
             healthy_items.append(item)
