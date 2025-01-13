@@ -46,7 +46,7 @@ st.title("Receipt Analyzer")
 
 # CSV file uploader
 uploaded_csv = st.file_uploader(
-    "Upload your CSV with the existing receipt data", ["csv"],
+    "Upload your CSV with existing receipt data", ["csv"],
     accept_multiple_files=False,
     key="user_csv"
 )
