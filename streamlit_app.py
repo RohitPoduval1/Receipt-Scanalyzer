@@ -1,5 +1,5 @@
 """
-The homepage for the Receipt Scanalyzer app. Connect both scanner.py and analyzer.py and allow
+The homepage for the Receipt Scanalyzer app. Connects both scanner.py and analyzer.py and allow
 for usage of both through the sidebar.
 """
 import streamlit as st

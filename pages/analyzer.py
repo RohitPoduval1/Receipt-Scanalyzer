@@ -2,7 +2,7 @@ import csv
 import statistics
 import pandas as pd
 import streamlit as st
-from analyzer_helpers import classify
+from helpers.analyzer.classify import classify
 from httpx import ConnectError
 
 # Streamlit Session State

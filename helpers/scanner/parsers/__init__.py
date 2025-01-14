@@ -1,9 +1,12 @@
 from .general import GeneralParser
-from .costco import CostcoParser
 from .target import TargetParser
+from .costco import CostcoParser
+from .walmart import WalmartParser
+
 
 __all__ = [
     "GeneralParser",
-    "CostcoParser",
     "TargetParser",
+    "CostcoParser",
+    "WalmartParser",
 ]

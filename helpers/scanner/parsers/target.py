@@ -1,6 +1,6 @@
 import cv2
 from pytesseract import image_to_string
-from scanner_helpers.image_helpers import grayscale, thicken_font
+from ..image_helpers import grayscale, thicken_font
 from .general import GeneralParser
 
 

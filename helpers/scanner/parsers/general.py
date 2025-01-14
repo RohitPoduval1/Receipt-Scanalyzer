@@ -1,7 +1,7 @@
 import cv2
 from re import finditer, MULTILINE
 from pytesseract import image_to_string
-from scanner_helpers.image_helpers import grayscale, thicken_font, add_border
+from ..image_helpers import grayscale, thicken_font, add_border
 
 
 class GeneralParser:

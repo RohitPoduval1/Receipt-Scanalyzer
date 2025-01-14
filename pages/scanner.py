@@ -1,10 +1,9 @@
 import io
 import cv2
 import numpy as np
-from scanner_helpers.parsers.walmart import WalmartParser
 import streamlit as st
-from scanner_helpers import Receipt
-from scanner_helpers.parsers import *
+from helpers.scanner.receipt import Receipt
+from helpers.scanner.parsers import *
 
 
 # Initialize session state
