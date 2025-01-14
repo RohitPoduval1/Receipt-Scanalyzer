@@ -1,6 +1,7 @@
 import io
 import cv2
 import numpy as np
+from scanner_helpers.parsers.walmart import WalmartParser
 import streamlit as st
 from scanner_helpers import Receipt
 from scanner_helpers.parsers import *
@@ -76,7 +77,14 @@ if st.button("Reset Scanner"):
     reset()
     st.rerun()
 
-SUPPORTED_STORES = ["Target", "Costco"]
+receiptType_parser = {
+    "Target": TargetParser(),
+    "Costco": CostcoParser(),
+    "Walmart": WalmartParser(),
+    "Other": GeneralParser(),
+}
+SUPPORTED_STORES = list(receiptType_parser.keys())
+SUPPORTED_STORES.remove("Other")
 
 if "receipt" not in ss or ss.receipt is None:
     ss.receipt = Receipt()
@@ -141,11 +149,6 @@ else:
 
 
 
-receiptType_parser = {
-    "Target": TargetParser(),
-    "Costco": CostcoParser(),
-    "Other": GeneralParser(),
-}
 
 items, prices = [], []
 output_csv = ""

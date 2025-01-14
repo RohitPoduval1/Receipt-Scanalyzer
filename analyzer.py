@@ -68,6 +68,7 @@ else:
         ss.valid_csv = True
 
 
+ollama_server_refused = False
 if ss.valid_csv:
     dates, items, prices = [], [], []
 
@@ -84,7 +85,7 @@ if ss.valid_csv:
         try:
             classification = classify(item)
         except ConnectError as e:
-            pass
+            ollama_server_refused = True
         if classification == "Healthy":
             healthy_count += 1
             healthy_items.append(item)
@@ -112,6 +113,9 @@ if ss.valid_csv:
 
         total_items += 1
 
+    # sort dict by number of occurences in descending order
+    item_occur = sorted(item_occur.items(), key=lambda x: x[1], reverse=True)
+
     # Prepare DataFrames by padding so all lists are the same length
     max_length = max(len(healthy_items), len(unhealthy_items), len(unknown_items))
     healthy_items += [""] * (max_length - len(healthy_items))
@@ -124,25 +128,33 @@ if ss.valid_csv:
         "Unknown Items": unknown_items
     })
 
-    # 80-20 RULE
-    st.header("80-20 Rule", divider=True)
-    if total_items - unknown_count != 0:
-        # Display classification percentages
-        st.write(f"""
-        **Summary of Purchases**:
-        - **Healthy**: {int(100 * (healthy_count / (total_items - unknown_count)))}%
-        - **Unhealthy**: {int(100 * (unhealthy_count / (total_items - unknown_count)))}%
-        - Note: Items not classified (unknown) are excluded from this breakdown.
-        (Numbers may not be 100% accurate and are only meant to give a rough idea)
-        """)
 
-        # Collapsible menu for detailed breakdown
-        with st.expander("See Detailed Breakdown"):
-            st.write("### Item Classification")
-            st.table(classification_df)
-        st.write(f"You could save ${unhealthy_sum:.2f} by cutting out your unhealthy purchases!")
-    else:
-        st.write("No classifiable items found in your upload.")
+    # VIEW ALL ITEMS (collapsible)
+    with st.expander("View All Items", expanded=False):
+        df = pd.DataFrame(item_occur, columns=["Item", "Number of Purchases"])
+        st.table(df)
+
+
+    # 80-20 RULE (if server connection is present)
+    if not ollama_server_refused:
+        st.header("80-20 Rule", divider=True)
+        if total_items - unknown_count != 0:
+            # Display classification percentages
+            st.write(f"""
+            **Summary of Purchases**:
+            - **Healthy**: {int(100 * (healthy_count / (total_items - unknown_count)))}%
+            - **Unhealthy**: {int(100 * (unhealthy_count / (total_items - unknown_count)))}%
+            - Note: Items not classified (unknown) are excluded from this breakdown.
+            (Numbers may not be 100% accurate and are only meant to give a rough idea)
+            """)
+
+            # Collapsible menu for detailed breakdown
+            with st.expander("See Detailed Breakdown"):
+                st.write("### Item Classification")
+                st.table(classification_df)
+            st.write(f"You could save ${unhealthy_sum:.2f} by cutting out your unhealthy purchases!")
+        else:
+            st.write("No classifiable items found in your upload.")
 
 
     # MONTHLY SPENDING TRENDS
@@ -154,7 +166,6 @@ if ss.valid_csv:
 
     # ITEM OCCURRENCES
     st.header("Most Purchased Items", divider=True)
-    item_occur = sorted(item_occur.items(), key=lambda x: x[1])  # ascending order
     if not item_occur:
         st.write("No items to display.")
     else:
@@ -162,7 +173,7 @@ if ss.valid_csv:
         top_items = [
             f"{i + 1}. {item[0]} {'were' if item[0].lower().endswith('s') else 'was'} bought \
             {item[1]} time{'s' if item[1] > 1 else ''}"
-            for i, item in enumerate(item_occur[-1:-4:-1])  # get up the top 3 items
+            for i, item in enumerate(item_occur[:3])  # get up the top 3 items
         ]
         st.markdown("\n".join(top_items))
 

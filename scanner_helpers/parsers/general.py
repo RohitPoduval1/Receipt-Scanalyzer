@@ -94,19 +94,16 @@ class GeneralParser:
         Returns:
             A list containing 2 lists, items and their associated prices
         """
-
-        # TODO: Add support for Ollama health classification
-        # Populate lists
         matches = finditer(self.regex, receipt_ocr, MULTILINE)
         items = []            # the name of the items from the receipt
         prices = []           # the price of each item
-        classifications = []  # the classification of the item as healthy or unhealthy
+        forbidden = ["TOTAL", "TAX", "PRICE"]
+
         for match in matches:
             # We only care about the name and price of the item
             name = match.group("name")
             price = match.group("price")
-            if name != "" and price != "" and "TOTAL" not in name.upper() and "PRICE" not in name.upper():
+            if name != "" and price != "" and not any(word in name for word in forbidden):
                 items.append(name)
                 prices.append(price)
-            # classifications.append(classify(name))
         return [items, prices]
