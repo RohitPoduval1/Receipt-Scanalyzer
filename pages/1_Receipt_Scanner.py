@@ -46,13 +46,9 @@ st.title("Receipt Scanner")
 
 
 # How to Use
-with st.expander("## How to Use"):
-    st.write("""
-        ### Basic Idea
-        Upload a photo of your receipt and get a CSV with the data that could be extracted from the
-        receipt (i.e. date, item name, price). This CSV can be used with the Receipt Analyzer.
-
-        ### Getting the Best Results
+with st.expander("Getting the Best Results"):
+    st.write(
+        """
         The receipt shouldn't be faded to oblivion! The higher the quality of the image the better
         the output will be. An ideal receipt consists of the following...
         - **Cropped** such that only the receipt is visible
@@ -60,14 +56,6 @@ with st.expander("## How to Use"):
         - Good lighting
         - Minimal drawings or marks on the receipt
         - Prominent text
-
-        ### Integration with Receipt Analyzer
-        A Scanalyzer consists of 2 parts:
-        1. Scanner (this)
-        2. Analyzer
-
-        You can use the CSV you get from this with the Receipt Analyzer to gain insight into
-        monthly spending habits, most purchased items, and how healthy you're eating.
         """)
 
 
