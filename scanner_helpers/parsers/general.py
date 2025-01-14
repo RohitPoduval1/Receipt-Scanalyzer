@@ -32,7 +32,7 @@ class GeneralParser:
             c_gray = grayscale(cropped)
 
             _, thresholded = cv2.threshold(c_gray, 30, 255, cv2.THRESH_TOZERO)
-            
+
             thresholded = thicken_font(thresholded, 2, 2)
             cv2.imwrite(f"temp/bboxes/bbox{i}.jpg", thresholded)
 
