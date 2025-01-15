@@ -104,6 +104,6 @@ class GeneralParser:
             name = match.group("name")
             price = match.group("price")
             if name != "" and price != "" and not any(word in name for word in forbidden):
-                items.append(name)
-                prices.append(price)
+                items.append(name.strip())
+                prices.append(price.strip())
         return [items, prices]
