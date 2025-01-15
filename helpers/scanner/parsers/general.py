@@ -62,7 +62,7 @@ class GeneralParser:
         if match is None:
             return ("", "", "")
 
-        month, day, year = match.group("month"), match.group("day"), match.group("year")
+        month, day, year = match.group("month").strip(), match.group("day").strip(), match.group("year").strip()
         if month == "" or day == "" or year == "":
             return ("", "", "")
 
