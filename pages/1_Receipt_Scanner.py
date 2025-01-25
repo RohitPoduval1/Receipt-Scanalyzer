@@ -6,7 +6,6 @@ from helpers.scanner.receipt import Receipt
 from helpers.scanner.parsers import *
 
 
-# Initialize session state
 ss = st.session_state
 
 
@@ -30,6 +29,7 @@ def get_choice_of_two(choice1: str, choice2: str):
 
     return ss.selected_choice
 
+
 def reset():
     file_prev_key = int(ss.file_uploader_key)
     store_prev_key = int(ss.store_choice_key)
@@ -41,11 +41,10 @@ def reset():
     ss.store_choice_key = str(store_prev_key + 1)
 
 
-# Title
 st.title("Receipt Scanner")
 
 
-# How to Use
+# Collapsable How to Use
 with st.expander("Getting the Best Results"):
     st.write(
         """
