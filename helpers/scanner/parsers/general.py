@@ -97,7 +97,7 @@ class GeneralParser:
         matches = finditer(self.regex, receipt_ocr, MULTILINE)
         items = []            # the name of the items from the receipt
         prices = []           # the price of each item
-        forbidden = ["TOTAL", "TAX", "PRICE"]
+        forbidden = ["TOTAL", "TAX", "PRICE", "MASTERCARD", "VISA"]
 
         for match in matches:
             # We only care about the name and price of the item
