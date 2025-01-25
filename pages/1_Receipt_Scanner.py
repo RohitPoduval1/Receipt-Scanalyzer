@@ -2,7 +2,6 @@ import io
 import cv2
 import numpy as np
 import streamlit as st
-import imageio 
 from helpers.scanner.receipt import Receipt
 from helpers.scanner.parsers import *
 
