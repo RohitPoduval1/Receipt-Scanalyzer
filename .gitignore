@@ -11,3 +11,4 @@ Dockerfile
 __pycache__/
 helpers/analyzer/__pycache__
 helpers/scanner/__pycache__
+helpers/scanner/parsers/__pycache__/
