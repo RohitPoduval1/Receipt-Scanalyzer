@@ -2,6 +2,7 @@ import io
 import cv2
 import numpy as np
 import streamlit as st
+from helpers.scanner.image_helpers import process_file
 from helpers.scanner.receipt import Receipt
 from helpers.scanner.parsers import *
 
@@ -140,9 +141,7 @@ items, prices = [], []
 output_csv = ""
 if ss.receipt.store and ss.receipt.file and not ss.ready_to_add_to_csv:
     # Convert file upload into opencv readable format
-    receipt_bytes = ss.receipt.file.read()
-    nparr = np.frombuffer(receipt_bytes, np.uint8)
-    ss.receipt.file = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    ss.receipt.file = process_file(ss.receipt.file)
 
     # Identify best parser for the receipt
     parser = receiptType_parser[ss.receipt.store]

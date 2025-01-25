@@ -1,6 +1,12 @@
 import cv2
 import numpy as np
+from streamlit.runtime.uploaded_file_manager import UploadedFile
 
+
+def process_file(uploaded_file: UploadedFile):
+    receipt_bytes = uploaded_file.read()
+    nparr = np.frombuffer(receipt_bytes, np.uint8)
+    return cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
 # Given a valid cv2 image, return its grayscale version
 def grayscale(image):
