@@ -1,1 +1,13 @@
 Dockerfile
+# Ignore everything in the root directory
+/*
+
+# Allow specific folders/files
+!helpers/
+!pages/
+!.gitignore
+
+# Ignore all specified directories
+__pycache__/
+helpers/analyzer/__pycache__
+helpers/scanner/__pycache__
