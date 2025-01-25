@@ -2,6 +2,7 @@ import io
 import cv2
 import numpy as np
 import streamlit as st
+import imageio 
 from helpers.scanner.receipt import Receipt
 from helpers.scanner.parsers import *
 
@@ -92,7 +93,7 @@ if "store_choice_key" not in ss:
 # Receipt Uploader Widget
 uploaded_file = st.file_uploader(
     "Upload your receipt",
-    type=["heic", "jpg", "jpeg", "png"],
+    type=["jpg", "jpeg", "png"],
     accept_multiple_files=False,
     key=ss.file_uploader_key,
 )
@@ -140,8 +141,9 @@ items, prices = [], []
 output_csv = ""
 if ss.receipt.store and ss.receipt.file and not ss.ready_to_add_to_csv:
     # Convert file upload into opencv readable format
-    file_bytes = np.frombuffer(ss.receipt.file.read(), np.uint8)
-    ss.receipt.file = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+    receipt_bytes = ss.receipt.file.read()
+    nparr = np.frombuffer(receipt_bytes, np.uint8)
+    ss.receipt.file = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     # Identify best parser for the receipt
     parser = receiptType_parser[ss.receipt.store]
