@@ -1,5 +1,6 @@
-import numpy as np
 import cv2
+import numpy as np
+from PIL import Image
 
 
 # Given a valid cv2 image, return its grayscale version
