@@ -1,9 +1,10 @@
 import csv
 import statistics
+from httpx import ConnectError
+from collections import defaultdict
 import pandas as pd
 import streamlit as st
 from helpers.analyzer.classify import classify
-from httpx import ConnectError
 
 # Streamlit Session State
 ss = st.session_state
@@ -22,17 +23,23 @@ mm_month = {
     11: "November 🦃",
     12: "December 🎄"
 }
-# Initialize variables
-healthy_items = []    # items grouped by classification
+# items grouped by classification
+healthy_items = []
 unhealthy_items = []
 unhealthy_sum = 0
 unknown_items = []
 healthy_count = 0
-unhealthy_count = 0   # the number of items with each classification
+
+# the number of items with each classification
+unhealthy_count = 0
 unknown_count = 0
 total_items = 0
-mm_sum = {}           # the total amount spent for each month
-item_occur = {}       # item name and the number of times it was purchased
+
+# the total amount spent for each month
+mmyy_sum = defaultdict(float)
+
+# item name and the number of times it was purchased
+item_occur = {}
 
 
 # Initialize Session State Variables
@@ -99,11 +106,7 @@ if ss.valid_csv:
 
         # Monthly Spending Breakdown
         mm, dd, yy = date.split("/")
-        mm = int(mm)
-        if mm not in mm_sum:
-            mm_sum[mm] = price
-        else:
-            mm_sum[mm] += price
+        mmyy_sum[f"{mm}/{yy}"] += price
 
         # Item Occurrences
         if item not in item_occur:
@@ -159,9 +162,11 @@ if ss.valid_csv:
 
     # MONTHLY SPENDING TRENDS
     st.header("Monthly Spending Trends", divider=True)
-    max_spending_month = mm_month[max(mm_sum, key=mm_sum.get)]
-    st.write(f"**Max Spending Month**: {max_spending_month}")
-    st.write(f"**Mean Monthly Spending**: ${statistics.mean(mm_sum.values()):.2f}")
+    max_spending_key = max(mmyy_sum, key=mmyy_sum.get)
+    month, year = max_spending_key.split('/')
+    max_spending_month = mm_month[int(month)]
+    st.write(f"**Max Spending Month**: {max_spending_month} {year}")
+    st.write(f"**Mean Monthly Spending**: ${statistics.mean(mmyy_sum.values()):.2f}")
 
 
     # ITEM OCCURRENCES
@@ -181,8 +186,8 @@ if ss.valid_csv:
     # MONTHLY GRAPHING
     st.header("Graphing Monthly Spending", divider=True)
     month_totals = pd.DataFrame({
-        "Month": mm_sum.keys(),
-        "Spending": mm_sum.values()
+        "Month": mmyy_sum.keys(),
+        "Spending": mmyy_sum.values()
     })
     month_totals = month_totals.set_index("Month")
     st.bar_chart(
