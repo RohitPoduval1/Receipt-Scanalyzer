@@ -175,6 +175,9 @@ if ss.receipt.store and ss.receipt.file and not ss.ready_to_add_to_csv:
             )
             ss.receipt.date = tmp.strftime("%x") if tmp else None
 
+    # BUG: If no items could be extracted, the program stops. It should ask the user to double
+    # check the quality of the uploaded receipt
+
     if ss.receipt.date and ss.receipt.items != [] and ss.receipt.prices != []:
         for j in range(len(ss.receipt.items)):
             ss.final_output += f"{ss.receipt.date}, {ss.receipt.items[j]}, {ss.receipt.prices[j]}\n"
@@ -214,4 +217,3 @@ if ss.ready_to_output_csv or ss.csv_choice == "Create new":
         file_name=name,
         icon=":material/download:"
     )
-
